@@ -1,3 +1,4 @@
+# Class to hold constants
 class Physics
     G = -9.81 # Gravity in m/s
     RHO = 1.23 # Air density in kg/m^3
@@ -10,19 +11,16 @@ class Physics
     M = 0.175 # Average frisbee mass in kg
 end
 
+# Frisbee flight simulator
 class Flight
-  attr_accessor :vx, :vy, :x, :y, :alpha, :cl, :cd, :dt
+  attr_accessor :vx0, :vy0, :x0, :y0, :vx, :vy, :x, :y, :alpha, :cl, :cd, :dt
 
   def initialize
     begin
-      # Read in the frisbee's initial conditions
-      f = File.open("param.dat")
-      # This reads in the single line, breaks it on spaces and converts the
-      # values to floats before assigning them all to variables
-      line = f.readline
-      self.alpha, x0, vx0, y0, vy0, self.dt = line.split.map(&:to_f)
 
-      #Open the output file
+      initial_values
+
+      # Open the output file
       @out = File.open("data.rb.dat","w")
 
     rescue => e
@@ -55,6 +53,19 @@ class Flight
   end
 
   private
+    def params
+      # Read in the frisbee's initial conditions
+      f = File.open("param.dat")
+      # This reads in the single line, breaks it on spaces and converts the
+      # values to floats.
+      line = f.readline
+      line.split.map(&:to_f)
+    end
+
+    def initial_values
+      self.alpha, self.x0, self.vx0, self.y0, self.vy0, self.dt = params
+    end
+  
     # Appends new state data to existing data
     def output
       @data << state + "\n"
