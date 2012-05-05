@@ -18,7 +18,7 @@ class Flight
   def initialize
     begin
 
-      initial_values
+      initial_params
 
       # Open the output file
       @out = File.open("data.rb.dat","w")
@@ -62,7 +62,7 @@ class Flight
       line.split.map(&:to_f)
     end
 
-    def initial_values
+    def initial_params
       self.alpha, self.x0, self.vx0, self.y0, self.vy0, self.dt = params
     end
   
